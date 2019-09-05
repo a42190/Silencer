@@ -29,6 +29,7 @@ Esta é uma aplicação que visa habilitar qualquer cidadão de criar queixas e 
    * [*Refresh Token*](#refreshToken)
    * [Atualizar o *Notification Token*](#updatenotificationToken)
    * [Eliminar o *Notification Token*](#deletenotificationToken)
+   
 ### Queixas
    * [Criar queixa](#createComplaint)
    * [Listar todas](#getAllComplaints)
