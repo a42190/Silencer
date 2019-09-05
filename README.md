@@ -4,6 +4,7 @@
     <img width="200" src="https://cdn4.iconfinder.com/data/icons/logos-3/600/React.js_logo-512.png">
   </p>
   <a text-align=center href="https://github.com/alexandreruivo/Silencer-API-Documentation/releases/download/1/Silencer-beta.apk">Download Beta Apk</a> |
+  <br/>
   <a text-align=center href="https://github.com/alexandreruivo/Silencer-API-Documentation/releases/download/1/Silencer-beta.apk">Visit React App</a>
 </div>
 
