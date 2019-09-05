@@ -14,9 +14,10 @@
   </p>
 </div>
 
+
 Esta é uma aplicação que visa habilitar qualquer cidadão de criar queixas e acompanhar o estado das mesmas. Para gestão e análise de todas estas queixas existem os operadores de informação. Todas as funcionalidades desta mesma API serão descritas prontamente.
 
-### Participants
+### Participantes
    * [Criar conta](#participantSignUp)
    * [Validar conta](#verification)
    * [Entrar na conta](#login)
@@ -28,6 +29,23 @@ Esta é uma aplicação que visa habilitar qualquer cidadão de criar queixas e 
    * [*Refresh Token*](#refreshToken)
    * [Atualizar o *Notification Token*](#updatenotificationToken)
    * [Eliminar o *Notification Token*](#deletenotificationToken)
+### Queixas
+   * [Criar queixa](#createComplaint)
+   * [Listar todas](#getAllComplaints)
+   * [Obter por identificador](#getById)
+   * [Atualizar informação da queixa](#updateComplaint)
+   * [Listar todas dentro de uma *Bounding Box*](#boxedComplaints)
+   * [Listar todas dentro de uma *Bounding Box* com *Clusters*](#boxedwithclustercomplaints)
+
+### Excepções
+   * [Not Valid User](#notvaliduserexception)
+   * [Authorization](#authorizationexception)
+   * [Not Matching Passwords](#notmatchingpasswordsexception)
+   * [Body Wrong or Missing](#bodywrongormissingexception)
+   * [Not Found](#notfoundexception)
+   * [Invalid Parameters](#invalidparametersexception)
+
+# Participantes
 
 ## <a name='participantSignUp'></a> Criar conta
 
@@ -60,19 +78,22 @@ Criação de conta sem permissão para utilizar o serviço.
 }
 ```
 
- * 422 **_Unprocessable Entity_** - Quando já existe um utilizador com o mesmo *e-mail* ou número de telefone, ou ainda se o número de telefone não for português, com as respostas em **_Problem+JSON_**, respectivamente:
+ * 422 **_Unprocessable Entity_**, quando já existe um utilizador com o mesmo *e-mail* ou número de telefone, ou ainda se o número de telefone não for português, com as respostas em **_Problem+JSON_**, respectivamente:
 ```json
 {
-    "title": "Invalid User",
+    "type": "https://alexandreruivo.github.io/Silencer/#notvaliduserexception",
+    "title": "Not Valid User",
     "detail": "The given email is taken.",
     "status": 422
 }
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
     "title": "Invalid Parameters",
     "detail": "The given cellphone number is already taken.",
     "status": 422
 }
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
     "title": "Invalid Parameters",
     "detail": "The given cellphone number is not portuguese.",
     "status": 422
@@ -90,7 +111,8 @@ Validação da conta através de um token gerado automaticamente pelo servidor
  * **_Hostname_**: _silencer.ga_
  * **Port**: 9443
  * **_URI_**: **silencerapi/participants/validation**
- * **Parameters** : email_verification_token
+ * **_Parameters_** : 
+    * email_verification_token - *token* (*String*)
  * **_Authorization_**: *Bearer Token* (Apenas participantes)
 ### Resultado retornado para o **_status code_**:
 
@@ -101,18 +123,20 @@ Validação da conta através de um token gerado automaticamente pelo servidor
 }
 ```
 
-* 400 **_Bad Request_**, com a mensagem de erro em **_Problem+JSON_**
+* 422 **_Unprocessable Entity_**, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
-    "title": "Empty Field",
+    "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
+    "title": "Invalid Parameters",
     "detail": "There must be a token to be validated.",
-    "status": 400
+    "status": 422
 }
 ```
 
- * 422 **_Unprocessable Entity_**- significa que o grupo especificado não foi encontrado.
+ * 422 **_Unprocessable Entity_**, significa que o token fornecido já não é válido.
 ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
     "title": "Invalid Parameters",
     "detail": "The given token has expired. Each token lasts for 24 hours after being generated.",
     "status": 422
@@ -156,25 +180,28 @@ Autenticação através das credenciais de utilizador.
     "role": "ADMIN"
 }
 ```
- * 400 **_Bad Request_** quando o valor de email ou password são nulos ou qualquer um destes campos está em falta, com a mensagem de erro em **_Problem+JSON_**
+ * 400 **_Bad Request_**, quando o valor de email ou password são nulos ou qualquer um destes campos está em falta, com a mensagem de erro em **_Problem+JSON_**
 ```json
     {
-    "title": "Request Body Wrong Or Missing",
-    "detail": "Impossible to proceed with the request because body wrongly formed or missing.",
-    "status": 400
+        "type": "https://alexandreruivo.github.io/Silencer/#requestbodymissingorwrongexpetion",
+        "title": "Request Body Wrong Or Missing",
+        "detail": "Impossible to proceed with the request because body wrongly formed or missing.",
+        "status": 400
 }
 ```
-* 400 **_Bad Request_** quando o valor de email ou password estão vazios , com a mensagem de erro em **_Problem+JSON_**
+* 422 **_Unprocessable Entity_**, quando o valor de email ou password estão vazios , com a mensagem de erro em **_Problem+JSON_**
 ```json
     {
-    "title": "Invalid Request",
-    "detail": "Either the email or password are empty.",
-    "status": 400
+        "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
+        "title": "Invalid Parameters",
+        "detail": "Either the email or password are empty.",
+        "status": 422
 }
 ```
- * 401 **_Unauthorized_** quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
+ * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
     "title": "Authorization required",
     "detail": "Access was denied because the required authorization was not granted",
     "status": 401
@@ -208,8 +235,9 @@ Apresenta toda a informação relativa ao interveniente, fornecida pelo mesmo.
  * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
     "title": "Authorization required",
-    "detail": "Access was denied because the required authorization was not granted",
+    "detail": "Access was denied because the required authorization was not granted.",
     "status": 401
 }
  ```
@@ -275,8 +303,9 @@ Permite ao operador de informação aceder a todos os utilizadores registados no
  * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
     "title": "Authorization required",
-    "detail": "Access was denied because the required authorization was not granted",
+    "detail": "Access was denied because the required authorization was not granted.",
     "status": 401
 }
  ```
@@ -286,8 +315,8 @@ Permite ao operador de informação aceder a todos os utilizadores registados no
 Informação de um utilizador em particular.
         
  * Método **HTTP** a ser utilizado: **_GET_**
- * **_Hostname_**: _localhost_
- * **Port**: 3000
+ * **_Hostname_**: _silencer.ga_
+ * **Port**: 9443
  * **_URI_**: **silencerapi/participants/\<pid>** - **pid** : Identificador do participante  
  * **_Authorization_**: *Bearer Token* (Apenas operadores de informação)
 
@@ -334,6 +363,7 @@ Informação de um utilizador em particular.
  * 404 **_Not Found_**, com a mensagem de erro em **_Problem+JSON_**
 ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#notfoundexception",
     "title": "The specific resource you are looking for does not exist",
     "detail": "There is no user with such ID",
     "status": 404
@@ -342,6 +372,7 @@ Informação de um utilizador em particular.
  * 422 **_Unprocessable Entity_**, quando o perfil a que se tenta aceder pertence a um operador de informação,que não o mesmo que faz o pedido, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
     "title": "Invalid Parameters",
     "detail": "The profile tried to access is not reachable.",
     "status": 422
@@ -350,8 +381,9 @@ Informação de um utilizador em particular.
   * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
     "title": "Authorization required",
-    "detail": "Access was denied because the required authorization was not granted",
+    "detail": "Access was denied because the required authorization was not granted.",
     "status": 401
 }
  ```
@@ -374,7 +406,9 @@ Mostra todos os detalhes de um determinado grupo.
     "cellphoneNumber":967849258
 }
  ```
-À excepção do campo 'currentPassword' todos os outros são opcionais, sendo que tem de ser modificado pelo menos um.
+
+À excepção do campo 'currentPassword' todos os outros são opcionais, sendo que tem de ser modificado pelo menos um. 
+
 ### Resultado retornado para o **_status code_**:
 
  * 200 **OK**,  com a resposta em **_JSON_**
@@ -392,6 +426,7 @@ Mostra todos os detalhes de um determinado grupo.
  * 422 **_Unprocessable Entity_**, quando o perfil a que se tenta aceder pertence a um operador de informação,que não o mesmo que faz o pedido, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
     "title": "Invalid Parameters",
     "detail": "Make sure you provided your current password to assure authenticity.",
     "status": 422
@@ -400,35 +435,37 @@ Mostra todos os detalhes de um determinado grupo.
  * 401 **_Unauthorized_** quando a *password* providenciada não corresponde com a que está guardada no servidor, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#notmatchingpasswordsexception",
     "title": "NotMatchingPasswords",
     "detail": "Your current password does not match with the one provided.",
     "status": 401
 }
  ```
 
-
- * 400 **_Bad Request_**, quando a *body* está vazio, nenhum dos campos corresponde aos referidos anteriormente ou o campo password não é enviado, com a mensagem de erro em **_Problem+JSON_**
+ * 422 **_Unprocessable Entity_**, com a mensagem de erro em **_Problem+JSON_**
 ```json
 {
-    "title": "Missing Required Information",
-    "detail": "Make sure you provided your current password to assure authenticity.",
-    "status": 400
+    "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
+    "title": "Invalid Parameters",
+    "detail": "Either email, name, password or cellphone number must be not null, while changing information.",
+    "status": 422
 }
 ```
-
- * 400 **_Bad Request_**, com a mensagem de erro em **_Problem+JSON_**
+* 400 **_Bad Request_**, com a mensagem de erro em **_Problem+JSON_**
 ```json
 {
-    "title": "Invalid Request",
-    "detail": "Either email, name, password or cellphone number must be not null, while changing information.",
+    "type": "https://alexandreruivo.github.io/Silencer/#requestbodywrongormissingexception",
+    "title": "Request Body Wrong Or Missing",
+    "detail": "Impossible to proceed with the request because body wrongly formed or missing.",
     "status": 400
 }
 ```
   * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
     "title": "Authorization required",
-    "detail": "Access was denied because the required authorization was not granted",
+    "detail": "Access was denied because the required authorization was not granted.",
     "status": 401
 }
  ```
@@ -461,6 +498,7 @@ Para recuperar acesso à conta é enviada para o e-mail do participante uma nova
  * 404 **_Not Found_**, quando é enviado um e-mail não existente na base de dados, com a mensagem de erro em **_Problem+JSON_**
 ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#notfoundexception",
     "title": "The specific resource you are looking for does not exist",
     "detail": "There is no user with such email",
     "status": 404
@@ -478,7 +516,7 @@ Adiciona uma equipa existente a um grupo.
 
 ### Resultado retornado para o **_status code_**:
 
- * 200 **OK** com a resposta em **_JSON_**
+ * 200 **OK**, com a resposta em **_JSON_**
 ```json
 {
     "newToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb3BhcmFjc0BnbWFpbC5jb20iLCJhdXRoIjoiUk9MRV9VU0VSIiwiaWF0IjoxNTY3NjM2MjQwLCJleHAiOjE1Njc3MjI2NDB9.3N_T9kHwN0yDjdkgCXKP8TW-JzqP_ADmYICnTIK8pQU"
@@ -488,8 +526,9 @@ Adiciona uma equipa existente a um grupo.
   * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
     "title": "Authorization required",
-    "detail": "Access was denied because the required authorization was not granted",
+    "detail": "Access was denied because the required authorization was not granted.",
     "status": 401
 }
  ```
@@ -515,6 +554,7 @@ Atribuir um novo *token* de forma a receber notificações.
 * 422 **_Unprocessable Entity_**, quando o token enviado está vazio, com a mensagem de erro em **_Problem+JSON_**
 ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
     "title": "Invalid Parameters",
     "detail": "The provided token is not valid, it is empty.",
     "status": 422
@@ -524,15 +564,18 @@ Atribuir um novo *token* de forma a receber notificações.
   * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
     "title": "Authorization required",
-    "detail": "Access was denied because the required authorization was not granted",
+    "detail": "Access was denied because the required authorization was not granted.",
     "status": 401
 }
  ```
 
+
 ## <a name='deletenotificationToken'></a> Eliminar o *Notification Token*
 
 Atribuir um novo *token* de forma a receber notificações.    
+
  * Método **HTTP** a ser utilizado: **_DELETE_**
  * **_Hostname_**: _silencer.ga_
  * **Port**: 9443
@@ -551,8 +594,630 @@ Atribuir um novo *token* de forma a receber notificações.
   * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
     "title": "Authorization required",
-    "detail": "Access was denied because the required authorization was not granted",
+    "detail": "Access was denied because the required authorization was not granted.",
     "status": 401
 }
  ```
+
+
+
+# Queixas
+
+ ## <a name='createComplaint'></a> Criar queixa
+
+ Criar uma nova queixa.
+
+ * Método **HTTP** a ser utilizado: **_POST_**
+ * **_Hostname_**: _silencer.ga_
+ * **Port**: 9443
+ * **_URI_**: **silencerapi/complaints**
+ * **_Authorization_**: *Bearer Token* (Apenas participantes)
+ * **_Body_**: 
+ ```json
+{
+	"type":"Feature",
+	"geometry": {
+        "type": "Point",
+        "coordinates": [
+            38.981609, -9.369435
+        ]
+    },
+    "properties":{
+    	"description" : "first complaint",
+		"deviceTime" : "1557139305713",
+		"decibelValues" : [10,10,10]
+    }
+    
+}
+ ```
+ ### Resultado retornado para o **_status code_**:
+
+ * 200 **OK**, com a resposta em **_JSON_**
+ ```json
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            38.981609,
+            -9.369435
+        ]
+    },
+    "properties": {
+        "id": 15,
+        "description": "first complaint",
+        "state": "SUBMITTED",
+        "deviceTime": 1557139305713,
+        "serverTime": 1567689409037,
+        "relevanceLevel": 1.0,
+        "decibelValues": [
+            10.0,
+            10.0,
+            10.0
+        ],
+        "complainerId": 3
+    }
+}
+ ```
+
+ * 400 **_Bad Request_**, quando o *payload* não corresponde com o definido em cima, com a mensagem de erro em **_Problem+JSON_**
+```json
+    {
+        "type": "https://alexandreruivo.github.io/Silencer/#requestbodywrongormissingexception",
+        "title": "Request Body Wrong Or Missing",
+        "detail": "Impossible to proceed with the request because body wrongly formed or missing.",
+        "status": 400
+}
+```
+
+  * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
+ ```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
+    "title": "Authorization required",
+    "detail": "Access was denied because the required authorization was not granted.",
+    "status": 401
+}
+ ```
+
+ ## <a name='getAllComplaints'></a> Listar todas as queixas
+
+Listar todas as queixas existentes. Os utilizadores apenas conseguem ver as suas, enquanto os operadores de informação podem ver todas.
+
+ * Método **HTTP** a ser utilizado: **_GET_**
+ * **_Hostname_**: _silencer.ga_
+ * **Port**: 9443
+ * **_URI_**: **silencerapi/complaints**
+ * **_Authorization_**: *Bearer Token* (Ambos)
+
+ ### Resultado retornado para o **_status code_**:
+
+ * 200 **OK**, com a resposta em **_JSON_**
+ ```json
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    38.981609,
+                    -9.369435
+                ]
+            },
+            "properties": {
+                "id": 15,
+                "description": "first complaint",
+                "state": "SUBMITTED",
+                "deviceTime": 1557139305713,
+                "serverTime": 1567689409037,
+                "relevanceLevel": 1.0,
+                "decibelValues": [
+                    10.0,
+                    10.0,
+                    10.0
+                ],
+                "complainerId": 3
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    38.981609,
+                    -9.369435
+                ]
+            },
+            "properties": {
+                "id": 7,
+                "description": "first complaint",
+                "state": "ACCEPTED",
+                "deviceTime": 1557139305713,
+                "serverTime": 1567556483379,
+                "relevanceLevel": 1.3028693023151788E-16,
+                "decibelValues": [
+                    10.0,
+                    10.0,
+                    10.0
+                ],
+                "complainerId": 2
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    39.060376,
+                    -8.17299
+                ]
+            },
+            "properties": {
+                "id": 4,
+                "description": "first complaint",
+                "state": "ACCEPTED",
+                "deviceTime": 1557139305713,
+                "serverTime": 1567552240921,
+                "relevanceLevel": 4.0096081780831594E-17,
+                "decibelValues": [
+                    10.0,
+                    10.0,
+                    10.0
+                ],
+                "complainerId": 2
+            }
+        },
+    ]
+}
+ ```
+
+  * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
+ ```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
+    "title": "Authorization required",
+    "detail": "Access was denied because the required authorization was not granted.",
+    "status": 401
+}
+ ```
+
+  ## <a name='getById'></a> Obter queixa por identificador
+
+Obter queixa por identificador. O utilizador só consegue aceder a queixas feitas pelo mesmo. O operador de informação consegue aceder a qualquer uma.
+
+ * Método **HTTP** a ser utilizado: **_GET_**
+ * **_Hostname_**: _silencer.ga_
+ * **Port**: 9443
+ * **_URI_**: **silencerapi/complaints/\<cid>** - **cid** : Identificador da queixa
+ * **_Authorization_**: *Bearer Token* (Ambos)
+
+### Resultado retornado para o **_status code_**:
+
+ * 200 **OK**, com a resposta em **_JSON_**
+ ```json
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            38.978415,
+            -8.206972
+        ]
+    },
+    "properties": {
+        "id": 1,
+        "description": "first complaint",
+        "state": "ACCEPTED",
+        "deviceTime": 1557139305713,
+        "serverTime": 1567526593646,
+        "relevanceLevel": 2.733385707086068E-20,
+        "decibelValues": [
+            10.0,
+            10.0,
+            10.0
+        ],
+        "complainerId": 2
+    }
+}
+ ```
+ * 404 **_Not Found_*, quando o recurso não é encontrado, com a mensagem de erro em **_Problem+JSON_**
+ ```json
+{
+    "type" : "https://alexandreruivo.github.io/Silencer/#notfoundexception",
+    "title": "The specific resource you are looking for does not exist",
+    "detail": "There is no complaint with such id for this user.",
+    "status": 404
+}
+```
+
+  * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
+ ```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
+    "title": "Authorization required",
+    "detail": "Access was denied because the required authorization was not granted.",
+    "status": 401
+}
+ ```
+
+ ## <a name='updateComplaint'></a> Atualizar informação da queixa
+
+ Atualização de uma queixa.
+
+  * Método **HTTP** a ser utilizado: **_PUT_**
+ * **_Hostname_**: _silencer.ga_
+ * **Port**: 9443
+ * **_URI_**: **silencerapi/complaints/\<cid>** - **cid** : Identificador da queixa
+ * **_Authorization_**: *Bearer Token* (Ambos)
+ * **_Body_**:
+
+ ##### Participante
+
+O Participante apenas tem 10 minutos para mudar a descrição.
+
+ ```json
+{
+    "description":"something else happened."
+}
+ ```
+ ##### Operador de Informação
+ ```json
+{
+    "state":"ANALYZING"
+}
+```
+
+### Resultado retornado para o **_status code_**:
+
+* 200 **OK**, com a resposta em **_JSON_**
+ ```json
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            38.978415,
+            -8.206972
+        ]
+    },
+    "properties": {
+        "id": 1,
+        "description": "something else happened.",
+        "state": "ANALYZING",
+        "deviceTime": 1557139305713,
+        "serverTime": 1567526593646,
+        "relevanceLevel": 2.733385707086068E-20,
+        "decibelValues": [
+            10.0,
+            10.0,
+            10.0
+        ],
+        "complainerId": 2
+    }
+}
+ ```
+
+* 400 **_Bad Request_**, quando os campos do body não são 'description', no caso do utilizador, e 'state', no caso do operador de informação, com a mensagem de erro em **_Problem+JSON_**
+```json
+    {
+        "type": "https://alexandreruivo.github.io/Silencer/#requestbodywrongormissingexception",
+        "title": "Request Body Wrong Or Missing",
+        "detail": "Impossible to proceed with the request because body wrongly formed or missing.",
+        "status": 400
+}
+```
+
+  * 404 **_Not Found_**, quando não existe a queixa com o identificador providenciado,com a mensagem de erro em **_Problem+JSON_**
+ ```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#notfoundexception",
+    "title": "The specific resource you are looking for does not exist",
+    "detail": "The complaint with that id does not exist.",
+    "status": 404
+}
+ ```
+
+  * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
+ ```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
+    "title": "Authorization required",
+    "detail": "Access was denied because the required authorization was not granted.",
+    "status": 401
+}
+ ```
+
+* 422 **_Unprocessable Entity_**, quando o identificador da queixa não pertence ao utilizador autenticado,com a mensagem de erro em **_Problem+JSON_**
+ ```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
+    "title": "Invalid Parameters",
+    "detail": "The given complaint do not belong to the authenticated user",
+    "status": 422
+}
+ ```
+* 422 **_Unprocessable Entity_**, quando já passaram 10 minutos após ser efectuada a queixa, com a mensagem de erro em **_Problem+JSON_**
+ ```json
+ {
+    "title": "Invalid Parameters",
+    "detail": "Sorry, 10 minutes has passed. You can no longer change the description.",
+    "status": 422
+}
+```
+
+ ## <a name='boxedComplaints'></a> Listar todas dentro de uma *Bounding Box*
+
+ Listar todas as queixas dentro de uma *box* feita à custa de coordenadas fornecidas pelo operador de informação.
+
+  * Método **HTTP** a ser utilizado: **_GET_**
+ * **_Hostname_**: _silencer.ga_
+ * **Port**: 9443
+ * **_URI_**: **silencerapi/complaints**
+ * **_Parameters_**: 
+   * northEastLat - Coordenada (*Double*) 
+   * northEastLng - Coordenada (*Double*) 
+   * southWestLat - Coordenada (*Double*)  
+   * southWestLng - Coordenada (*Double*) 
+ * **_Authorization_**: *Bearer Token* (Apenas operador de informação)
+ 
+ ### Resultado retornado para o **_status code_**:
+
+* 200 **OK**, com a resposta em **_JSON_**
+ ```json
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    38.978415,
+                    -8.206972
+                ]
+            },
+            "properties": {
+                "complaintId": 1,
+                "relevanceLevel": 1.6826499727874375E-20,
+                "serverTime": 1567526593646,
+                "decibelAverage": 10.0
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    39.157259,
+                    -8.176262
+                ]
+            },
+            "properties": {
+                "complaintId": 3,
+                "relevanceLevel": 2.0783858959518397E-17,
+                "serverTime": 1567552221963,
+                "decibelAverage": 10.0
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    39.060373,
+                    -8.172984
+                ]
+            },
+            "properties": {
+                "complaintId": 5,
+                "relevanceLevel": 2.0992250389824976E-17,
+                "serverTime": 1567552257879,
+                "decibelAverage": 10.0
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    39.060376,
+                    -8.17299
+                ]
+            },
+            "properties": {
+                "complaintId": 4,
+                "relevanceLevel": 2.0893597764882437E-17,
+                "serverTime": 1567552240921,
+                "decibelAverage": 10.0
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    39.178658,
+                    -8.187146
+                ]
+            },
+            "properties": {
+                "complaintId": 2,
+                "relevanceLevel": 2.06836402721244E-17,
+                "serverTime": 1567552204561,
+                "decibelAverage": 10.0
+            }
+        }
+    ]
+}
+ ```
+
+  * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
+ ```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
+    "title": "Authorization required",
+    "detail": "Access was denied because the required authorization was not granted.",
+    "status": 401
+}
+ ```
+
+ ## <a name='boxedwithclustercomplaints'></a> Listar todas dentro de uma *Bounding Box* com *Clusters*
+
+ Listar todas as queixas dentro de uma *box* feita à custa de coordenadas fornecidas pelo operador de informação, sendo posteriormente agrupadas e é formado um *cluster* baseado na distância fornecida pelo operador.
+
+  * Método **HTTP** a ser utilizado: **_GET_**
+ * **_Hostname_**: _silencer.ga_
+ * **Port**: 9443
+ * **_URI_**: **silencerapi/complaints**
+ * **_Parameters_**: 
+   * northEastLat - Coordenada (*Double*) 
+   * northEastLng - Coordenada (*Double*) 
+   * southWestLat - Coordenada (*Double*)  
+   * southWestLng - Coordenada (*Double*) 
+   * distance - Metros (*Double*)
+   * minPoints - Quantidade (*Int*)
+   * beginDate - Data (*Long*)(Opcional)
+   * endDate - Data (*Long*)(opcional)
+   * averageDecibel - decibel (*Double)(Opcional)
+ * **_Authorization_**: *Bearer Token* (Apenas operador de informação)
+
+ ### Resultado retornado para o **_status code_**:
+
+* 200 **OK**, com a resposta em **_JSON_**
+ ```json
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "clusterId": 0,
+                "numGeom": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    39.060373,
+                    -8.172984
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "clusterId": 1,
+                "numGeom": 1
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    39.060376,
+                    -8.17299
+                ]
+            }
+        }
+    ]
+}
+ ```
+
+
+* 422 **_Unprocessable Entity_**, quando as datas enviadas não são válidas, com a mensagem de erro em **_Problem+JSON_**
+```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
+    "title": "Invalid Parameters",
+    "detail": "The given dates are not valid.",
+    "status": 422
+}
+```
+  * 401 **_Unauthorized_**, quando as credenciais inseridas não são válidas, com a mensagem de erro em **_Problem+JSON_**
+ ```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
+    "title": "Authorization required",
+    "detail": "Access was denied because the required authorization was not granted.",
+    "status": 401
+}
+ ```
+
+ # Excepções
+
+ ## <a name='notvaliduserexception'></a> *Not Valid User Exception*
+
+ Quando o email ao qual se está a tentar associar já existe na base de dados do servidor.
+
+ ```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#notvaliduserexception",
+    "title": "Not Valid User",
+    "detail": "The given email is taken.",
+    "status": 422
+}
+ ```
+
+ ## <a name='authorizationexception'></a> *Authorization Exception*
+
+ Quando as credenciais apresentadas, sejam elas *e-mail* e *password* ou *token*, estão erradas.
+ ```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#authorizationexception",
+    "title": "Authorization required",
+    "detail": "Access was denied because the required authorization was not granted.",
+    "status": 401
+}
+ ```
+
+## <a name='notmatchingpasswordsexception'></a> *Not Matching Passwords Exception*
+
+Quando a password apresentada para alterar as informações do utilizador não corresponde à password guardada na base de dados.
+
+ ```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#notmatchingpasswordsexception",
+    "title": "NotMatchingPasswords",
+    "detail": "Your current password does not match with the one provided.",
+    "status": 401
+}
+ ```
+
+## <a name='bodywrongormissingexception'></a> *Body Wrong Or Missing Exception*
+
+Quando o conteúdo do *body* não corresponde ao pretendido.
+
+```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#bodywrongormissingexception",
+    "title": "Request Body Wrong Or Missing",
+    "detail": "Impossible to proceed with the request because body wrongly formed or missing.",
+    "status": 400
+}
+```
+
+## <a name='notfoundexception'></a> *Not Found Exception*
+
+Quando recurso desejado não existe registado.
+```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#notfoundexception",
+    "title": "The specific resource you are looking for does not exist",
+    "detail": "detailed message could vary.",
+    "status": 404
+}
+```
+
+## <a name='invalidparametersexception'></a> *Invalid Parameters Exception*
+
+Quando os parâmetros fornecidos são inválidos.
+
+```json
+{
+    "type": "https://alexandreruivo.github.io/Silencer/#invalidparametersexception",
+    "title": "Invalid Parameters",
+    "detail": "detailed message could vary.",
+    "status": 422
+}
+```
