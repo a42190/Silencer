@@ -824,7 +824,7 @@ Obter queixa por identificador. O utilizador só consegue aceder a queixas feita
     }
 }
  ```
- * 404 **_Not Found_*, quando o recurso não é encontrado, com a mensagem de erro em **_Problem+JSON_**
+ * 404 **_Not Found_**, quando o recurso não é encontrado, com a mensagem de erro em **_Problem+JSON_**
  ```json
 {
     "type" : "https://alexandreruivo.github.io/Silencer/#notfoundexception",
