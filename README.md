@@ -1,8 +1,10 @@
 <div align="center">
   <p>
     <img width="250" src="https://www.androidpolice.com/wp-content/themes/ap2/ap_resize/ap_resize.php?%20src=https%3A%2F%2Fwww.androidpolice.com%2Fwp-content%2Fuploads%2F2019%2F08%2FAndroid-logo_stacked-RGB.png&w=728">
+    <img width="250" src="https://cdn4.iconfinder.com/data/icons/logos-3/600/React.js_logo-512.png">
   </p>
   <a href="https://github.com/alexandreruivo/Silencer-API-Documentation/releases/download/1/Silencer-beta.apk">Download Beta Apk</a>
+  <a href="https://github.com/alexandreruivo/Silencer-API-Documentation/releases/download/1/Silencer-beta.apk">Visit React App</a>
 </div>
 
 Esta é uma aplicação que visa habilitar qualquer cidadão de criar queixas e acompanhar o estado das mesmas. Para gestão e análise de todas estas queixas existem os operadores de informação. Todas as funcionalidades desta mesma API serão descritas prontamente.
