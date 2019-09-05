@@ -18,7 +18,7 @@
 Esta é uma aplicação que visa habilitar qualquer cidadão de criar queixas e acompanhar o estado das mesmas. Para gestão e análise de todas estas queixas existem os operadores de informação. Todas as funcionalidades desta mesma API serão descritas prontamente.
 
 ### Participantes
-   * [Criar conta](#participantSignUp)
+   * [Criar conta](#signup)
    * [Validar conta](#verification)
    * [Entrar na conta](#login)
    * [Aceder à informação do próprio perfil](#personalProfile)
@@ -47,7 +47,7 @@ Esta é uma aplicação que visa habilitar qualquer cidadão de criar queixas e 
 
 # Participantes
 
-## <a name='participantSignUp'></a> Criar conta
+## <a name='signup'></a> Criar conta
 
 Criação de conta sem permissão para utilizar o serviço.
         
