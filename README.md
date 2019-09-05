@@ -1,5 +1,3 @@
-# <a name='DocApi'></a> _Silencer API_
-
 Esta é uma aplicação que visa habilitar qualquer cidadão de criar queixas e acompanhar o estado das mesmas. Para gestão e análise de todas estas queixas existem os operadores de informação. Todas as funcionalidades desta mesma API serão descritas prontamente.
 
 ### Participants
