@@ -25,7 +25,7 @@ Esta é uma aplicação que visa habilitar qualquer cidadão de criar queixas e 
    * [Participante por identificador](#participantById)
    * [Mudar a informação do perfil privado](#changeInfo)
    * [Recuperar o acesso à conta](#recoverPassword)
-   * [*Refresh Token*](#refreshToken)
+   * [*Refresh Authentication Token*](#refreshToken)
    * [Atualizar o *Notification Token*](#updatenotificationToken)
    * [Eliminar o *Notification Token*](#deletenotificationToken)
    
@@ -211,7 +211,7 @@ Autenticação através das credenciais de utilizador.
 
 ## <a name='personalProfile'></a>Aceder à informação do próprio perfil
 
-Apresenta toda a informação relativa ao interveniente, fornecida pelo mesmo.       
+Apresenta toda a informação relativa ao utilizador, fornecida pelo mesmo.       
  * Método **HTTP** a ser utilizado: **_GET_**
  * **_Hostname_**: _silencer.ga_
  * **Port**: 9443
@@ -389,7 +389,7 @@ Informação de um utilizador em particular.
  ```
 
 ## <a name='changeInfo'></a>Mudar a informação do perfil privado
-Mostra todos os detalhes de um determinado grupo.        
+
  * Método **HTTP** a ser utilizado: **_PUT_**
  * **_Hostname_**: _silencer.ga_
  * **Port**: 9443
@@ -505,9 +505,9 @@ Para recuperar acesso à conta é enviada para o e-mail do participante uma nova
 }
 ```
 
-## <a name='refreshToken'></a>*Refresh Token*
+## <a name='refreshToken'></a>*Refresh Authentication Token*
 
-Adiciona uma equipa existente a um grupo.        
+       
  * Método **HTTP** a ser utilizado: **_GET_**
  * **_Hostname_**: _silencer.ga_
  * **Port**: 9443
@@ -574,7 +574,7 @@ Atribuir um novo *token* de forma a receber notificações.
 
 ## <a name='deletenotificationToken'></a> Eliminar o *Notification Token*
 
-Atribuir um novo *token* de forma a receber notificações.    
+Deixar de receber notificações
 
  * Método **HTTP** a ser utilizado: **_DELETE_**
  * **_Hostname_**: _silencer.ga_
