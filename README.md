@@ -1,9 +1,7 @@
 <p align="center">
   <b>Silencer Android Application:</b><br>
   <img width="200" src="https://cdn.vox-cdn.com/thumbor/qqEFP3WIMfRlM0SizK8PfUxMAeE=/0x246:2040x1314/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/19086219/Android_logo_stacked__RGB_.jpg">
-  <p/>
   <b>Link Stable</b><br>
-  <p/>
   <a href="https://github.com/alexandreruivo/Silencer-API-Documentation/releases/download/1/Silencer-beta.apk">Link Beta</a>
 </p>
 
