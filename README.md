@@ -1,3 +1,13 @@
+<p align="center">
+  <b>Silencer Android Application:</b><br>
+  <a href="#">Link Stable</a> 
+  <p/>
+  <a href="https://github.com/alexandreruivo/Silencer-API-Documentation/releases/download/1/Silencer-beta.apk">Link Beta</a> |
+  <br><br>
+</p>
+
+
+
 Esta é uma aplicação que visa habilitar qualquer cidadão de criar queixas e acompanhar o estado das mesmas. Para gestão e análise de todas estas queixas existem os operadores de informação. Todas as funcionalidades desta mesma API serão descritas prontamente.
 
 ### Participants
