@@ -104,7 +104,7 @@ Criação de conta sem permissão para utilizar o serviço.
 
 
 
-## <a name='verification'></a>Validar Conta
+## <a name='verification'></a> Validar Conta
 
 Validação da conta através de um token gerado automaticamente pelo servidor   
 
@@ -606,7 +606,7 @@ Atribuir um novo *token* de forma a receber notificações.
 
 # Queixas
 
- ## <a name='createComplaint'></a> Criar queixa
+## <a name='createComplaint'></a> Criar queixa
 
  Criar uma nova queixa.
 
@@ -633,7 +633,7 @@ Atribuir um novo *token* de forma a receber notificações.
     
 }
  ```
- ### Resultado retornado para o **_status code_**:
+### Resultado retornado para o **_status code_**:
 
  * 200 **OK**, com a resposta em **_JSON_**
  ```json
@@ -683,7 +683,7 @@ Atribuir um novo *token* de forma a receber notificações.
 }
  ```
 
- ## <a name='getAllComplaints'></a> Listar todas as queixas
+## <a name='getAllComplaints'></a> Listar todas as queixas
 
 Listar todas as queixas existentes. Os utilizadores apenas conseguem ver as suas, enquanto os operadores de informação podem ver todas.
 
@@ -693,7 +693,7 @@ Listar todas as queixas existentes. Os utilizadores apenas conseguem ver as suas
  * **_URI_**: **silencerapi/complaints**
  * **_Authorization_**: *Bearer Token* (Ambos)
 
- ### Resultado retornado para o **_status code_**:
+### Resultado retornado para o **_status code_**:
 
  * 200 **OK**, com a resposta em **_JSON_**
  ```json
@@ -786,7 +786,7 @@ Listar todas as queixas existentes. Os utilizadores apenas conseguem ver as suas
 }
  ```
 
-  ## <a name='getById'></a> Obter queixa por identificador
+## <a name='getById'></a> Obter queixa por identificador
 
 Obter queixa por identificador. O utilizador só consegue aceder a queixas feitas pelo mesmo. O operador de informação consegue aceder a qualquer uma.
 
@@ -845,7 +845,7 @@ Obter queixa por identificador. O utilizador só consegue aceder a queixas feita
 }
  ```
 
- ## <a name='updateComplaint'></a> Atualizar informação da queixa
+## <a name='updateComplaint'></a> Atualizar informação da queixa
 
  Atualização de uma queixa.
 
@@ -856,7 +856,7 @@ Obter queixa por identificador. O utilizador só consegue aceder a queixas feita
  * **_Authorization_**: *Bearer Token* (Ambos)
  * **_Body_**:
 
- ##### Participante
+##### Participante
 
 O Participante apenas tem 10 minutos para mudar a descrição.
 
@@ -865,7 +865,7 @@ O Participante apenas tem 10 minutos para mudar a descrição.
     "description":"something else happened."
 }
  ```
- ##### Operador de Informação
+##### Operador de Informação
  ```json
 {
     "state":"ANALYZING"
@@ -950,7 +950,7 @@ O Participante apenas tem 10 minutos para mudar a descrição.
 }
 ```
 
- ## <a name='boxedComplaints'></a> Listar todas dentro de uma *Bounding Box*
+## <a name='boxedComplaints'></a> Listar todas dentro de uma *Bounding Box*
 
  Listar todas as queixas dentro de uma *box* feita à custa de coordenadas fornecidas pelo operador de informação.
 
@@ -965,7 +965,7 @@ O Participante apenas tem 10 minutos para mudar a descrição.
    * southWestLng - Coordenada (*Double*) 
  * **_Authorization_**: *Bearer Token* (Apenas operador de informação)
  
- ### Resultado retornado para o **_status code_**:
+### Resultado retornado para o **_status code_**:
 
 * 200 **OK**, com a resposta em **_JSON_**
  ```json
@@ -1066,7 +1066,7 @@ O Participante apenas tem 10 minutos para mudar a descrição.
 }
  ```
 
- ## <a name='boxedwithclustercomplaints'></a> Listar todas dentro de uma *Bounding Box* com *Clusters*
+## <a name='boxedwithclustercomplaints'></a> Listar todas dentro de uma *Bounding Box* com *Clusters*
 
  Listar todas as queixas dentro de uma *box* feita à custa de coordenadas fornecidas pelo operador de informação, sendo posteriormente agrupadas e é formado um *cluster* baseado na distância fornecida pelo operador.
 
