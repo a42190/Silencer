@@ -1085,7 +1085,7 @@ O Participante apenas tem 10 minutos para mudar a descrição.
    * averageDecibel - decibel (*Double)(Opcional)
  * **_Authorization_**: *Bearer Token* (Apenas operador de informação)
 
- ### Resultado retornado para o **_status code_**:
+### Resultado retornado para o **_status code_**:
 
 * 200 **OK**, com a resposta em **_JSON_**
  ```json
@@ -1144,7 +1144,7 @@ O Participante apenas tem 10 minutos para mudar a descrição.
 }
  ```
 
- # Excepções
+# Excepções
 
 ## <a name='notvaliduserexception'></a> *Not Valid User Exception*
 
