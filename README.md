@@ -16,7 +16,6 @@
 
 
 Esta é uma aplicação que visa habilitar qualquer cidadão de criar queixas e acompanhar o estado das mesmas. Para gestão e análise de todas estas queixas existem os operadores de informação. Todas as funcionalidades desta mesma API serão descritas prontamente.
-
 ### Participantes
    * [Criar conta](#signup)
    * [Validar conta](#verification)
@@ -1147,7 +1146,7 @@ O Participante apenas tem 10 minutos para mudar a descrição.
 
  # Excepções
 
- ## <a name='notvaliduserexception'></a> *Not Valid User Exception*
+## <a name='notvaliduserexception'></a> *Not Valid User Exception*
 
  Quando o email ao qual se está a tentar associar já existe na base de dados do servidor.
 
@@ -1160,7 +1159,7 @@ O Participante apenas tem 10 minutos para mudar a descrição.
 }
  ```
 
- ## <a name='authorizationexception'></a> *Authorization Exception*
+## <a name='authorizationexception'></a> *Authorization Exception*
 
  Quando as credenciais apresentadas, sejam elas *e-mail* e *password* ou *token*, estão erradas.
  ```json
