@@ -8,7 +8,7 @@
   <p>
     <img width="200" src="https://cdn4.iconfinder.com/data/icons/logos-3/600/React.js_logo-512.png">
     <br/>
-    <a href="https://silencer-web.a42210isel.now.sh/" target="_blank">
+    <a href="https://silencer.ga" target="_blank">
       Visit React App
     </a>
   </p>
