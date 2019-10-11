@@ -2,7 +2,7 @@
   <p>
     <img width="250" src="https://www.androidpolice.com/wp-content/themes/ap2/ap_resize/ap_resize.php?%20src=https%3A%2F%2Fwww.androidpolice.com%2Fwp-content%2Fuploads%2F2019%2F08%2FAndroid-logo_stacked-RGB.png&w=728">
     <br/>
-    <a href="https://mega.nz/#!5m53RIZB!wJK3Vbs6RYFhYtjGmTRL22_CLvZbjYAw9H_uuc_Ptas" target="_blank">           Download Apk
+    <a href="https://mega.nz/#!krh03agA!8-_9ZuMWw0hJdlargwCnIn7o-pp2aX9o8bTxFkhr1Vg" target="_blank">           Download Apk
     </a> 
   </p>
   <p>
